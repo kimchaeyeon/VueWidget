@@ -1,0 +1,85 @@
+<template>
+    <div class="widget-func">
+        <select
+            v-model="selected"
+            @change="clickStatus($event)"   
+            >
+            <option disabled value="" >상태를 선택하세요</option>
+            <option 
+                v-for="(status,index) in statusList"
+                :key="index"
+                :value="status"          
+            >{{ status }}</option>
+        </select>
+        <div class="select__arrow"></div>
+
+        <div class="call-func">
+            <button
+                @click="clickAnswerCall">
+                <i class="material-icons">phone_enabled</i>
+                받기
+            </button>
+            <button
+                @click="clickHangupCall">
+                <i class="material-icons">phone_disabled</i>
+                끊기
+            </button>
+            <button
+                v-if="holdToggle"
+                @click="clickHoldCall">
+                <i class="material-icons">pause_circle</i>
+                보류
+            </button>
+            <button
+                v-else
+                @click="clickRetriveCall">
+                <i class="material-icons">play_circle_filled</i>
+                보류해제
+            </button>
+        </div>
+    </div>
+</template>
+
+<script>
+import { answer, hangup, hold, retrieve, ready, notReady, afterCallWork } from '../assets/js/callAPI'
+
+
+export default {
+    data() {
+        return {
+            statusList : ['대기', '휴식', '후처리'],
+            selected: '',
+            holdToggle: true
+        }
+    },
+    methods: {
+        clickAnswerCall () {
+            console.log("this.$parent.widget.currentCall_id",this.$parent.widget.currentCall_id)
+            answer(this.$parent.widget.currentCall_id)
+        },
+        clickHangupCall () {
+            hangup(this.$parent.widget.currentCall_id)
+        },
+        clickHoldCall () {
+            this.holdToggle = !this.holdToggle
+            hold(this.$parent.widget.currentCall_id)
+        },
+        clickRetriveCall () {
+            this.holdToggle = !this.holdToggle
+            retrieve(this.$parent.widget.currentCall_id)
+        },
+        clickStatus (event) {
+            if(this.selected === "대기"){
+                ready()
+            } else if(this.selected === "휴식") {
+                notReady()
+            } else if(this.selected === "후처리") {
+                afterCallWork()
+            } else {
+                console.log('statusError');
+            }
+        }
+    }
+
+}
+</script>
