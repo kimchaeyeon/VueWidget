@@ -31,7 +31,7 @@ export default {
     data () {
         return {
             id:'',
-            pw:''
+            pw:'',
         }
     },
     methods: {
@@ -40,28 +40,29 @@ export default {
             const pw = this.pw
             const validatedLogin = id && id.trim() && pw && pw.trim()
             if(!validatedLogin){
-                alert('아이디또는 패스워드를 정확하게 입력해주세요.')
-                this.id = this.id.trim()
-                this.pw = this.pw.trim()
-                return
+                alert( "아이디또는 패스워드를 정확하게 입력해주세요." );
+                this.id = this.id.trim();
+                this.pw = this.pw.trim();
+                return;
             }
-            console.log("id:",id,"pw:",pw)
-            this.$parent.login(id,pw)
-            if(this.$parent.isLoginMode == false ){
-                this.$parent.isLoginMode = !this.$parent.isLoginMode 
+            console.log(`id:${id}, pw:${pw}`);
+            this.$parent.login( id, pw );
+
+            if( this.$parent.isLoginMode == false ){
+                this.$parent.isLoginMode = !this.$parent.isLoginMode;
             }
             
         },
         onclickLogout(){
-            const id = this.id
-            const pw = this.pw
-            console.log("id:",id,"pw:",pw)
-            this.$parent.logout()
-            this.id =''
-            this.pw =''
+            const id = this.id;
+            const pw = this.pw;
+            console.log(`id:${id}, pw:${pw}`);
+            this.$parent.logout();
+            this.id = '';
+            this.pw = '';
             // 새로고침 기능 넣기
-            if(this.$parent.isLoginMode == true ){
-                this.$parent.isLoginMode = !this.$parent.isLoginMode 
+            if( this.$parent.isLoginMode == true ){
+                this.$parent.isLoginMode = !this.$parent.isLoginMode;
             }
         }
     }

@@ -2,7 +2,7 @@
     <div class="widget-func">
         <select
             v-model="selected"
-            @change="clickStatus($event)"   
+            @change="clickStatus( $event )"   
             >
             <option disabled value="" >상태를 선택하세요</option>
             <option 
@@ -41,42 +41,42 @@
 </template>
 
 <script>
-import { answer, hangup, hold, retrieve, ready, notReady, afterCallWork } from '../assets/js/callAPI'
+import { answer, reject, hangup, hold, retrieve, ready, notReady, afterCallWork, singleStepTransfer, singleStepConference } from "../assets/js/callAPI"
 
 
 export default {
     data() {
         return {
-            statusList : ['대기', '휴식', '후처리'],
-            selected: '',
-            holdToggle: true
+            statusList : [ "대기", "휴식", "후처리" ],
+            selected: "",
+            holdToggle: true,
         }
     },
     methods: {
         clickAnswerCall () {
-            console.log("this.$parent.widget.currentCall_id",this.$parent.widget.currentCall_id)
-            answer(this.$parent.widget.currentCall_id)
+            // console.log("this.$parent.currentCall_id",this.$parent.currentCall_id)
+            answer( this.$parent.currentCall_id );
         },
         clickHangupCall () {
-            hangup(this.$parent.widget.currentCall_id)
+            hangup( this.$parent.currentCall_id );
         },
         clickHoldCall () {
-            this.holdToggle = !this.holdToggle
-            hold(this.$parent.widget.currentCall_id)
+            this.holdToggle = !this.holdToggle;
+            hold( this.$parent.currentCall_id );
         },
         clickRetriveCall () {
-            this.holdToggle = !this.holdToggle
-            retrieve(this.$parent.widget.currentCall_id)
+            this.holdToggle = !this.holdToggle;
+            retrieve( this.$parent.currentCall_id );
         },
-        clickStatus (event) {
-            if(this.selected === "대기"){
-                ready()
-            } else if(this.selected === "휴식") {
-                notReady()
-            } else if(this.selected === "후처리") {
-                afterCallWork()
+        clickStatus ( event ) {
+            if( this.selected === "대기" ){
+                ready();
+            } else if( this.selected === "휴식" ) {
+                notReady();
+            } else if( this.selected === "후처리" ) {
+                afterCallWork();
             } else {
-                console.log('statusError');
+                console.log( "statusError" );
             }
         }
     }

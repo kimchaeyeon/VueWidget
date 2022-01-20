@@ -40,62 +40,62 @@ export default {
     data () {
         return {
             isLoginMode: false,
-            extension: '',
-            customerNum: '',
-            status:''
+            extension: "",
+            customerNum: "",
+            status: "",
         }
     },
     computed: {
         getExt () {
-            this.extension = this.$parent.widget.extension
-            return this.extension
+            this.extension = this.$parent.extension;
+            return this.extension;
         },
 
         getCustNum () {
-            if(this.$parent.widget.call_data.callType == "Inbound"){
-                this.customerNum = this.$parent.widget.eventData.ani
+            if( this.$parent.call_data.callType == "Inbound" ){
+                this.customerNum = this.$parent.eventData.ani;
             } else {
-                this.customerNum = this.$parent.widget.eventData.dnis
+                this.customerNum = this.$parent.eventData.dnis;
             }
             
-            if(this.$parent.widget.call_data.state == "Released"){
-                this.customerNum = ""
+            if( this.$parent.call_data.state == "Released" ){
+                this.customerNum = "";
             }
 
-            return this.customerNum
+            return this.customerNum;
         },
         
         getStatus () {
             //대기, 이석, 후처리, 통화 중
-            //this.status = this.$parent.widget.userState
-            switch(this.$parent.widget.userState) {
+            //this.status = this.$parent.userState
+            switch( this.$parent.userState ) {
                 case "Ready" :
-                    this.status = "대기"
+                    this.status = "대기";
                     break;
                 case "Not Ready":
-                    this.status = "휴식"
+                    this.status = "휴식";
                     break;
                 case "AfterCallWork":
-                    this.status = "후처리"
+                    this.status = "후처리";
                     break;
                 case "Dialing":
-                    this.status = "전화 발신 중"
+                    this.status = "전화 발신 중";
                     break;
                 case "Ringing":
-                    this.status = "전화 왔습니다"
+                    this.status = "전화 왔습니다";
                     break;
                 case "Released":
-                    this.status = "전화 종료"
+                    this.status = "전화 종료";
                     break;
                 case "Established":
-                    this.status = "통화 중"
+                    this.status = "통화 중";
                     break;
                 default:
-                    this.status = ""
+                    this.status = "";
                     break;
 
             }
-            return this.status
+            return this.status;
         }
     },
 
