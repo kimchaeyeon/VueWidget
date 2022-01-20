@@ -99,13 +99,13 @@ let setOperation = function ( id, op ) {
     });
 };
 
-export function dial( number, deviceId ) {
+export function dial( num, deviceId ) {
     post({
         uri: `/api/v2/me/devices/${deviceId}/calls`,
         json: {
                 operationName: "Dial",
                 destination: {
-                                phoneNumber: number
+                                phoneNumber: num
                             }
                 }
     });
