@@ -30,8 +30,8 @@
 export default {
     data () {
         return {
-            id:'',
-            pw:'',
+            id: '',
+            pw: '',
         }
     },
     methods: {
@@ -40,7 +40,7 @@ export default {
             const pw = this.pw
             const validatedLogin = id && id.trim() && pw && pw.trim()
             if(!validatedLogin){
-                alert( "아이디또는 패스워드를 정확하게 입력해주세요." );
+                alert( '아이디또는 패스워드를 정확하게 입력해주세요.' );
                 this.id = this.id.trim();
                 this.pw = this.pw.trim();
                 return;
