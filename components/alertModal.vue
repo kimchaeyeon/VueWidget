@@ -1,5 +1,5 @@
 <template>
-  <div class="alert-modal">
+  <!-- <div class="alert-modal"> -->
       <transition name="modal">
                 <div class="modal-mask">
                     <div class="modal-wrapper">
@@ -16,16 +16,18 @@
                                 </slot>
                             </div>
                             <div class="modal-footer">
-                                <slot name="left-btn">
-                                </slot>
-                                <slot name="right-btn">
-                                </slot>
+                                <div class="alert-btn">
+                                    <slot name="left-btn"></slot>
+                                </div>
+                                <div class="alert-btn">
+                                    <slot name="right-btn"></slot>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
       </transition>
-  </div>
+  <!-- </div> -->
 </template>
 
 <script>

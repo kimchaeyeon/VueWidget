@@ -38,12 +38,12 @@
                     보류해제
                 </button>
                 <button
-                    @click="showAgent('Transfer')">
+                    @click="showAgent('호전환')">
                     <i class="material-icons">phone_forwarded</i>
                     호전환
                 </button>
                 <button
-                    @click="showAgent('Conference')">
+                    @click="showAgent('3자통화')">
                     <i class="material-icons">groups</i>
                     3자통화
                 </button>

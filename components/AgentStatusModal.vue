@@ -44,12 +44,12 @@
         <alert-modal
             v-if="showAlert">
             <h3 slot="header">{{ $parent.operation }}</h3>
-            <div slot="body">{{ $parent.operation + `를 하시겠습니까?` }}</div>
-            <button slot="left-btn"
+            <div slot="body">{{ $parent.operation + ` 하시겠습니까?` }}</div>
+            <div slot="left-btn"
                     @click="showAlert = false">
                 취소
-            </button>
-            <button slot="right-btn">확인</button>
+            </div>
+            <div slot="right-btn">확인</div>
         </alert-modal>
     </div>
 </template>

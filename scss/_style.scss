@@ -257,6 +257,38 @@ label {
   }
 }
 
+//Table
+.modal-body {
+  table {
+    border: 2px solid #42b983;
+    border-radius: 3px;
+    background-color: #fff;
+  }
+  
+  th {
+    background-color: #42b983;
+    color: rgba(255,255,255,255);
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  
+  td {
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+  
+  th, td {
+    min-width: 120px;
+    padding: 10px 20px;
+  }
+}
+
+
+
+
+//Modal
 .modal-mask {
   position: fixed;
   z-index: 9998;
@@ -275,7 +307,7 @@ label {
 }
 
 .modal-container {
-  width: 300px;
+  width: 480px;
   margin: 0px auto;
   padding: 20px 30px;
   background-color: #fff;
@@ -295,6 +327,11 @@ label {
   margin: 20px 0;
 }
 
+.modal-footer {
+  display: flex;
+  justify-content: center;
+}
+
 .modal-default-button {
   float: right;
 }
@@ -302,6 +339,20 @@ label {
 .modal-enter, .modal-leave-to {
   opacity: 0;
 }
+.modal-enter-to, .modal-leave {
+  opacity: 1;
+}
 .modal-enter-active, .modal-leave-active {
   transition: opacity .3s;
+}
+
+.alert-btn {
+  font-size: 18px;
+  width: 70px;
+  text-align: center;
+  padding: 8px;
+  background-color: #42b983;
+  color: white;
+  cursor: pointer;
+  margin: 7px;
 }
