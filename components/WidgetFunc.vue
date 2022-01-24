@@ -49,18 +49,9 @@
                 </button>
             </div>
         </div>
-        <agent-status-modal>
-            <!-- <div slot="header">
-                {{ operation }}
-                <button 
-                    class="modal-default-button material-icons" 
-                    @click="showAgentList = false"
-                >close
-                </button>
-            </div>
-            <div slot="body">
-
-            </div> -->
+        <agent-status-modal 
+            :columns="agentColumns"
+            :datas="agentData">
         </agent-status-modal>
     </div>
 </template>
@@ -75,11 +66,17 @@ export default {
     },
     data() {
         return {
-            statusList : [ '대기', '휴식', '후처리' ],
+            statusList : [ '대기', '휴식', '후처리' ],  
             selected: '',
             holdToggle: true,
             showAgentList: false,
             operation: '',
+            agentColumns: [ '상담원명', '상태', '내선번호' ],
+            agentData: [
+                { 상담원명: '김채연', 상태: '이석', 내선번호: '1026' },
+                { 상담원명: '김채채', 상태: '휴식', 내선번호: '1027' },
+                { 상담원명: '딤채연', 상태: '대기', 내선번호: '1028' },
+            ]
         }
     },
     methods: {
