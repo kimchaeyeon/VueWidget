@@ -1,27 +1,35 @@
 <template>
     <div class="widget-login">
-        <label>ID
-            <input 
-                :value="id"
-                type="text"
-                @input="id = $event.target.value">
-        </label>
-        <label>PW
-            <input 
-                :value="pw"
-                type="text"
-                @input="pw = $event.target.value">
-        </label>
-        <button v-if="!this.$parent.isLoginMode"
+        <div v-if="!this.$parent.isLoginMode" 
+            class="login-input">
+            <label>ID
+                <input 
+                    :value="id"
+                    type="text"
+                    @input="id = $event.target.value">
+            </label>
+            <label>PW
+                <input 
+                    :value="pw"
+                    type="text"
+                    @input="pw = $event.target.value">
+            </label>
+            <button v-if="!this.$parent.isLoginMode"
                 class="btn"
                 @click="onclickLogin">
             Login
-        </button>
-        <button v-else
-                class="btn"
-                @click="onclickLogout">
-            Logout
-        </button>
+            </button>
+        </div>
+
+        <div v-else 
+            class="login-input">
+            상담원 {{this.$parent.agentName}}님, 반갑습니다 👩‍💼
+            <button class="btn"
+                    @click="onclickLogout">
+                Logout
+            </button>
+        </div>
+
     </div>
 </template>
 

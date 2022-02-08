@@ -8,7 +8,6 @@
             <div class="status__customer">
                 <div>Customers</div> 
                 <div style="margin: 0 auto;
-                            font-size: 30px;
                             font-weight: bold;">
                 {{ getCustNum }}
                 </div>
@@ -52,16 +51,23 @@ export default {
         },
 
         getCustNum () {
+            
             if( this.$parent.call_data.callType == 'Inbound' ){
                 this.customerNum = this.$parent.eventData.ani;
-            } else {
+            } else if ( this.$parent.call_data.callType == 'Outbound' ) {
                 this.customerNum = this.$parent.eventData.dnis;
             }
-            
+
             if( this.$parent.call_data.state == 'Released' ){
                 this.customerNum = '';
+                return this.customerNum;
             }
 
+            
+            if( this.$parent.participants && this.$parent.participants != this.customerNum ) {
+                this.customerNum = this.customerNum + ', ' + this.$parent.participants;
+                return this.customerNum;
+            }
             return this.customerNum;
         },
         

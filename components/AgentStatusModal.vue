@@ -28,7 +28,7 @@
                                     <tbody>
                                         <tr v-for="(data, i) in datas" :key="i">
                                             <td v-for="(col, i) in columns" :key="i"
-                                                @dblclick="showAlert = true">
+                                                @dblclick ="clickOperationCall( data )">
                                                 {{ data[col] }}
                                             </td>
                                         </tr>
@@ -44,12 +44,13 @@
         <alert-modal
             v-if="showAlert">
             <h3 slot="header">{{ $parent.operation }}</h3>
-            <div slot="body">{{ $parent.operation + ` 하시겠습니까?` }}</div>
+            <div slot="body">{{ `'` + AgentName + `' 상담원으로 ` + $parent.operation + ` 하시겠습니까?` }}</div>
             <div slot="left-btn"
                     @click="showAlert = false">
                 취소
             </div>
-            <div slot="right-btn">확인</div>
+            <div slot="right-btn"
+                    @click="acceptOperationCall">확인</div>
         </alert-modal>
     </div>
 </template>
@@ -57,6 +58,7 @@
 <script>
 
 import AlertModal from './AlertModal'
+import { OperationCall } from '../assets/js/callAPI'
 
 export default {
     components: {
@@ -68,13 +70,34 @@ export default {
     },
     data () {
         return {
-            showAlert: false
+            showAlert: false,
+            AgentName: '',
+            phoneNumber : ''
         }
     },
     computed: {
     },
     methods: {
+        clickOperationCall ( data ) {
+            this.phoneNumber = data.내선번호;
+            this.AgentName = data.상담원명;
+            this.showAlert = true;
+        },
+        acceptOperationCall () {
+            let op = '';
+            let num = this.phoneNumber;
+            let id = this.$parent.$parent.currentCall_id;
+            
+            if ( this.$parent.operation === '호전환' ) {
+                op = 'SingleStepTransfer';
+            } else if ( this.$parent.operation === '3자통화' ) {
+                op = 'SingleStepConference';
+            }
 
+            OperationCall( id, op, num );
+            this.showAlert = false;
+            this.$parent.showAgentList = false;
+        }
     }
 }
 </script>

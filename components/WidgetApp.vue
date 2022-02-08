@@ -18,6 +18,7 @@ import WidgetLogin from './WidgetLogin'
 import WidgetStatus from './WidgetStatus'
 import WidgetInput from './WidgetInput'
 import WidgetFunc from './WidgetFunc'
+import AgentStatusModal from './AgentStatusModal'
 
 import { get, post, ready } from '../assets/js/callAPI'
 
@@ -28,6 +29,7 @@ export default {
         WidgetStatus,
         WidgetInput,
         WidgetFunc,
+        AgentStatusModal,
     },
     data () {
         return {
@@ -41,6 +43,7 @@ export default {
             username: '',
             password: '',
             extension: '',
+            agentName: '',
             deviceId: '',
             currentCall_id: '',
             deviceState: '',
@@ -49,6 +52,7 @@ export default {
             channel: '',
             call_data: '',
             eventName: '',
+            participants:'',
             eventData: {
                 participants: '',
                 callType: '',
@@ -94,6 +98,7 @@ export default {
         },
 
         connectCometD( data ) {
+            data.then((data) => this.agentName = data.user.firstName);
             var reqHeaders = {};
             reqHeaders[this.csrfHeaderName] = this.csrfToken;
             this.cometd.unregisterTransport( 'websocket' );
@@ -117,20 +122,19 @@ export default {
         onHandshake( handshake ) {
             try {
                 console.log('[onHandshake]');
-                if (handshake.successful === true) {
-                    if (this.subscription) {
+                if ( handshake.successful === true ) {
+                    if ( this.subscription ) {
                         console.log(`unsubscribing: ${this.subscription}`);
-                        this.cometd.unsubscribe(this.subscription);
+                        this.cometd.unsubscribe( this.subscription );
                     }
                     console.log( 'Subscribing to channels...' );
-
                     this.subscription = this.cometd.subscribe( '/v2/me/*', this.onMessage );
-                }else {
+                } else {
                     console.log( '[handshake실패]' );
                     }
-                } catch (error) {
+            } catch (error) {
                     console.log( error );
-                    }
+                }
         },
 
         onMessage( message ) {
@@ -211,6 +215,7 @@ export default {
                             break;
 
                         case 'ParticipantsUpdated' :
+                                    this.participants = this.eventData.participants[0].phoneNumber;
                             break;
 
                         case 'AttachedDataChanged' :
@@ -239,10 +244,10 @@ export default {
             this.connected = message.successful;
 
             if (!wasConnected && this.connected) {
-                console.log('Cometd connected.');
+                console.log( 'Cometd connected.' );
                 this.startContactCenterSession();
             } else if (wasConnected && !this.connected) {
-                console.log('Cometd disconnected.');
+                console.log( 'Cometd disconnected.' );
             }
         },
 
@@ -257,7 +262,7 @@ export default {
                 uri: '/api/v2/me',
                 json: {
                     operationName: 'StartContactCenterSession',
-                    channels: [ "voice" ]
+                    channels: [ 'voice' ]
                 }
             });
             ready();

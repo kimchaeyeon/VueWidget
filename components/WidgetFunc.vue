@@ -14,7 +14,8 @@
             </select>
             <div class="select__arrow"></div>
 
-            <div class="call-func">
+            <div v-if="this.$parent.isLoginMode"
+                class="call-func">
                 <button
                     @click="clickAnswerCall">
                     <i class="material-icons">phone_enabled</i>
@@ -48,16 +49,44 @@
                     3자통화
                 </button>
             </div>
+            <div v-else
+                class="call-func">
+                <button
+                    @click="loginCheckAlert">
+                    <i class="material-icons">phone_enabled</i>
+                    받기
+                </button>
+                <button
+                    @click="loginCheckAlert">
+                    <i class="material-icons">phone_disabled</i>
+                    끊기
+                </button>
+                <button
+                    @click="loginCheckAlert">
+                    <i class="material-icons">pause_circle</i>
+                    보류
+                </button>
+                <button
+                    @click="loginCheckAlert">
+                    <i class="material-icons">phone_forwarded</i>
+                    호전환
+                </button>
+                <button
+                    @click="loginCheckAlert">
+                    <i class="material-icons">groups</i>
+                    3자통화
+                </button>
+            </div>
         </div>
         <agent-status-modal 
             :columns="agentColumns"
-            :datas="agentData">
+            :datas="getAgentList">
         </agent-status-modal>
     </div>
 </template>
 
 <script>
-import { answer, reject, hangup, hold, retrieve, ready, notReady, afterCallWork, singleStepTransfer, singleStepConference } from '../assets/js/callAPI'
+import { answer, reject, hangup, hold, retrieve, ready, notReady, afterCallWork, getAgentListFromGws } from '../assets/js/callAPI'
 import AgentStatusModal from './AgentStatusModal'
 
 export default {
@@ -71,15 +100,30 @@ export default {
             holdToggle: true,
             showAgentList: false,
             operation: '',
-            agentColumns: [ '상담원명', '상태', '내선번호' ],
-            agentData: [
-                { 상담원명: '김채연', 상태: '이석', 내선번호: '1026' },
-                { 상담원명: '김채채', 상태: '휴식', 내선번호: '1027' },
-                { 상담원명: '딤채연', 상태: '대기', 내선번호: '1028' },
-            ]
+            agentColumns: [ '상담원명', '내선번호', '상태' ],
+            agentData: [],
+            agentStatusList: [],
+        }
+    },
+    computed: {
+        getAgentList () {
+            this.agentData = this.agentStatusList.map( ( data ) => {
+                 return {
+                    '상담원명' : data.name,
+                    '내선번호' : data.phoneNumber,
+                    '상태' : data.userState
+                }
+            });
+            return this.agentData;
         }
     },
     methods: {
+        loginCheckAlert () {
+            if( this.$parent.isLoginMode == false ) {
+                alert('로그인 후 사용하세요!');
+                return;
+            }
+        },
         clickAnswerCall () {
             // console.log("this.$parent.currentCall_id",this.$parent.currentCall_id)
             answer( this.$parent.currentCall_id );
@@ -96,6 +140,12 @@ export default {
             retrieve( this.$parent.currentCall_id );
         },
         clickStatus ( event ) {
+            if( this.$parent.isLoginMode == false ) {
+                alert('로그인 후 사용하세요!');
+                this.selected = ''
+                return;
+            }
+
             if( this.selected === '대기' ){
                 ready();
             } else if( this.selected === '휴식' ) {
@@ -109,6 +159,35 @@ export default {
         showAgent( op ) {
             this.showAgentList = true;
             this.operation = op;
+            let getAgentListCallback = (res) => {
+                res.then((data) => {
+                    let agentList = data.contacts;
+                    let channel_info;
+
+                    this.agentStatusList = agentList.map(( agent_info ) => { 
+
+                        let userState;
+                        let phoneNumber;
+
+                        if ( agent_info.availability ) {
+                            channel_info = agent_info.availability;
+                            if ( channel_info.channels.length > 0 ) {
+                                userState = channel_info.channels[0].userState.displayName;
+                            } 
+                        }
+                        if ( agent_info.phoneNumbers ) {
+                            phoneNumber = agent_info.phoneNumbers[0].phoneNumber;
+                        }
+                        return {
+                            id: agent_info.id,
+                            name: agent_info.firstName,
+                            phoneNumber: phoneNumber,
+                            userState: channel_info ? userState : ''
+                        }
+                    });
+                });
+            }
+            getAgentListFromGws(getAgentListCallback); 
         }
     }
 
