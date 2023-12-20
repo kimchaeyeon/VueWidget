@@ -1,22 +1,33 @@
 <template>
     <div class="widget-input">
-        <div>Dial</div>
-        <input 
-            :value="phoneNumber"
-            :placeholder="placeholder"
-            type="text" 
-            @input="phoneNumber = $event.target.value"
-            @keypress.enter="onClickDial"
-            >
-        <button @click="onClickDial">
-            <i class="material-icons">call</i>
-        </button>
+        <div v-if="this.$parent.isLoginMode">
+            <div>Dial</div>
+            <input 
+                :value="phoneNumber"
+                :placeholder="placeholder"
+                type="text" 
+                @input="phoneNumber = $event.target.value"
+                @keypress.enter="onClickDial"
+                >
+            <button @click="onClickDial">
+                <i class="material-icons">call</i>
+            </button>
+        </div>
+        <div v-else>
+            <div>Dial</div>
+            <input 
+                :placeholder="placeholder"
+                type="text"
+                >
+            <button @click="loginCheckAlert">
+                <i class="material-icons">call</i>
+            </button>
+        </div>
     </div>
 </template>
 
 <script>
 import { dial } from '../assets/js/callAPI'
-
 
 export default {
     data () {
@@ -26,6 +37,10 @@ export default {
         }
     },
     methods: {
+        loginCheckAlert () {
+                alert('로그인 후 사용하세요!');
+                return;
+        },
         onClickDial () {
             const phoneNumber = this.phoneNumber;
             const validatedNumber = phoneNumber && phoneNumber.trim();
@@ -41,6 +56,7 @@ export default {
             this.phoneNumber = '';
             console.log( '전화걸자', phoneNumber );
         }
+
     }
 }
 </script>

@@ -196,7 +196,7 @@ export default {
 
                                 case 'Released' : //상대발 콜의 상태가 끊어짐
                                 
-                                    this.userState = 'Released';
+                                    //this.userState = 'Released';
                                     break;
 
                                 case 'Established' : 

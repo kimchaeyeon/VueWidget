@@ -183,14 +183,17 @@ label {
 
 //WIDGET-INPUT
 .widget-input {
-  display: flex;
+
   margin: 10px auto;
+
   div {
+    display: flex;
     padding: 8px;
     font-size: 24px;
     color: #2f528f;
     font-weight: bold;
   }
+
   input[type="text"] {
     border: 2px solid #2f528f;
     width: 300px;
@@ -285,6 +288,12 @@ label {
 }
 
 
+//Color
+.func-disabled {
+  color: #777676;
+  cursor: unset;
+  border: 2px solid #777676;
+}
 
 
 //Modal

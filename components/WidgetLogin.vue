@@ -23,13 +23,12 @@
 
         <div v-else 
             class="login-input">
-            상담원 {{this.$parent.agentName}}님, 반갑습니다 👩‍💼
+            상담원 {{ this.$parent.agentName }}님, 반갑습니다 👩‍💼
             <button class="btn"
                     @click="onclickLogout">
                 Logout
             </button>
         </div>
-
     </div>
 </template>
 

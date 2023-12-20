@@ -119,10 +119,8 @@ export default {
     },
     methods: {
         loginCheckAlert () {
-            if( this.$parent.isLoginMode == false ) {
                 alert('로그인 후 사용하세요!');
                 return;
-            }
         },
         clickAnswerCall () {
             // console.log("this.$parent.currentCall_id",this.$parent.currentCall_id)
@@ -165,14 +163,17 @@ export default {
                     let channel_info;
 
                     this.agentStatusList = agentList.map(( agent_info ) => { 
-
+                        
                         let userState;
                         let phoneNumber;
-
                         if ( agent_info.availability ) {
-                            channel_info = agent_info.availability;
-                            if ( channel_info.channels.length > 0 ) {
-                                userState = channel_info.channels[0].userState.displayName;
+                            channel_info = agent_info.availability.channels;
+                            if ( channel_info.length > 0) {
+                                channel_info.map((c)=> {
+                                    if (c.channel === "voice"){
+                                        userState = c.userState.displayName;
+                                    }
+                                });
                             } 
                         }
                         if ( agent_info.phoneNumbers ) {
